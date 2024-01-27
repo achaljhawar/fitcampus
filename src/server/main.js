@@ -29,6 +29,14 @@ app.use((req, res, next) => {
   res.locals.user = req.user;
   next();
 });
+app.get('/logout', (req, res) => {
+  req.logout(() => {
+    req.session.destroy(() => {
+      res.redirect('/');
+    });
+  });
+});
+
 app.get('/api/auth/check', (req, res) => {
   res.json({ isAuthenticated: req.isAuthenticated(), user: req.user });
 });
