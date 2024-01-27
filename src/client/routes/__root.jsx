@@ -3,9 +3,10 @@ import { TanStackRouterDevtools } from '@tanstack/router-devtools'
 
 export const Route = createRootRoute({
   component: () => (
-    <>
-      <Outlet />
+    <div className="flex flex-col items-center">
+      <div className='max-w-sm'><Outlet /></div>
+      
       <TanStackRouterDevtools />
-    </>
+    </div>
   ),
 })
