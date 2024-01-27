@@ -1,6 +1,6 @@
 import express from "express";
 import ViteExpress from "vite-express";
-
+import { supabase } from "./database/db.js";
 const app = express();
 
 app.get("/hello", (req, res) => {
