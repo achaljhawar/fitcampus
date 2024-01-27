@@ -10,6 +10,9 @@ import { Route as rootRoute } from "./routes/__root"
 
 const IndexLazyImport = createFileRoute("/")()
 const RoutineIndexLazyImport = createFileRoute("/Routine/")()
+const ProgramUpperLazyImport = createFileRoute("/Program/upper")()
+const ProgramLowerLazyImport = createFileRoute("/Program/lower")()
+const ProgramCardioLazyImport = createFileRoute("/Program/cardio")()
 
 // Create/Update Routes
 
@@ -23,12 +26,41 @@ const RoutineIndexLazyRoute = RoutineIndexLazyImport.update({
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import("./routes/Routine/index.lazy").then((d) => d.Route))
 
+const ProgramUpperLazyRoute = ProgramUpperLazyImport.update({
+  path: "/Program/upper",
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import("./routes/Program/upper.lazy").then((d) => d.Route))
+
+const ProgramLowerLazyRoute = ProgramLowerLazyImport.update({
+  path: "/Program/lower",
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import("./routes/Program/lower.lazy").then((d) => d.Route))
+
+const ProgramCardioLazyRoute = ProgramCardioLazyImport.update({
+  path: "/Program/cardio",
+  getParentRoute: () => rootRoute,
+} as any).lazy(() =>
+  import("./routes/Program/cardio.lazy").then((d) => d.Route),
+)
+
 // Populate the FileRoutesByPath interface
 
 declare module "@tanstack/react-router" {
   interface FileRoutesByPath {
     "/": {
       preLoaderRoute: typeof IndexLazyImport
+      parentRoute: typeof rootRoute
+    }
+    "/Program/cardio": {
+      preLoaderRoute: typeof ProgramCardioLazyImport
+      parentRoute: typeof rootRoute
+    }
+    "/Program/lower": {
+      preLoaderRoute: typeof ProgramLowerLazyImport
+      parentRoute: typeof rootRoute
+    }
+    "/Program/upper": {
+      preLoaderRoute: typeof ProgramUpperLazyImport
       parentRoute: typeof rootRoute
     }
     "/Routine/": {
@@ -42,5 +74,8 @@ declare module "@tanstack/react-router" {
 
 export const routeTree = rootRoute.addChildren([
   IndexLazyRoute,
+  ProgramCardioLazyRoute,
+  ProgramLowerLazyRoute,
+  ProgramUpperLazyRoute,
   RoutineIndexLazyRoute,
 ])
