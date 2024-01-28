@@ -36,7 +36,36 @@ app.get('/logout', (req, res) => {
     });
   });
 });
+const currentDate = new Date();
+const currentHour = currentDate.getHours();
 
+let { data: slots, error } = await supabase
+  .from('slots')
+  .select("*")
+app.get('/api/slots/cardio', async (req, res) => {
+  let { data: slots, error } = await supabase
+    .from('slots')
+    .select("*")
+    .eq("type","cardio")
+    .select("*")
+  res.json(slots)
+});
+app.get('/api/slots/upper', async (req, res) => {
+  let { data: slots, error } = await supabase
+    .from('slots')
+    .select("*")
+    .eq("type","upper")
+    .select("*")
+  res.json(slots)
+});
+app.get('/api/slots/lower', async (req, res) => {
+  let { data: slots, error } = await supabase
+    .from('slots')
+    .select("*")
+    .eq("type","lower")
+    .select("*")
+  res.json(slots)
+});
 app.get('/api/auth/check', (req, res) => {
   res.json({ isAuthenticated: req.isAuthenticated(), user: req.user });
 });
