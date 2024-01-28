@@ -7,7 +7,9 @@ dotenv.config();
 import './auth.js';
 import passport from "passport";
 const app = express();
-
+function isLoggedIn(req,res,next) {
+  req.user ? next() : res.redirect("/")
+}
 app.use(session({ secret: "bruh"}));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -25,7 +27,7 @@ app.get('/login/google/callback',
 app.get('/login/auth/failure', (req,res) => {
   res.send('Failed to authenticate..')
 })
-app.use((req, res, next) => {
+app.use(async (req, res, next) => {
   res.locals.user = req.user;
   next();
 });
@@ -36,12 +38,43 @@ app.get('/logout', (req, res) => {
     });
   });
 });
-const currentDate = new Date();
-const currentHour = currentDate.getHours();
 
-let { data: slots, error } = await supabase
-  .from('slots')
-  .select("*")
+async function checkAndUpdateSlotStatus() {
+  try {
+    const currentTime = new Date();
+    const currentHour = currentTime.getHours();
+    const { data: outdatedSlots, error } = await supabase
+      .from('slots')
+      .select('slotid', 'end_time', 'Reserved_by')
+      .lte('end_time', currentHour);
+
+    if (error) {
+      throw new Error(`Error fetching outdated slots: ${error.message}`);
+    }
+
+    if (outdatedSlots && outdatedSlots.length > 0) {
+      for (const outdatedSlot of outdatedSlots) {
+        const { slotid , Reserved_by } = outdatedSlot;
+        if (Reserved_by) {
+          const { data, error } = await supabase
+            .from('slots')
+            .update({ Reserved_by: null })
+            .eq('slotid', slotid);
+        }
+      }
+    }
+  } catch (error) {
+    console.error(`An error occurred: ${error.message}`);
+  }
+}
+
+// Middleware to check and update outdated slots before processing the booking
+app.use(async (req, res, next) => {
+  await checkAndUpdateSlotStatus();
+  next();
+});
+
+
 app.get('/api/slots/cardio', async (req, res) => {
   let { data: slots, error } = await supabase
     .from('slots')
