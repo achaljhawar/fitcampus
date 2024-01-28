@@ -9,10 +9,11 @@ import { Route as rootRoute } from "./routes/__root"
 // Create Virtual Routes
 
 const IndexLazyImport = createFileRoute("/")()
-const RoutineIndexLazyImport = createFileRoute("/Routine/")()
-const ProgramUpperLazyImport = createFileRoute("/Program/upper")()
-const ProgramLowerLazyImport = createFileRoute("/Program/lower")()
-const ProgramCardioLazyImport = createFileRoute("/Program/cardio")()
+const NutritionIndexLazyImport = createFileRoute("/Nutrition/")()
+const BookIndexLazyImport = createFileRoute("/Book/")()
+const BookUpperLazyImport = createFileRoute("/Book/upper")()
+const BookLowerLazyImport = createFileRoute("/Book/lower")()
+const BookCardioLazyImport = createFileRoute("/Book/cardio")()
 
 // Create/Update Routes
 
@@ -21,27 +22,32 @@ const IndexLazyRoute = IndexLazyImport.update({
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import("./routes/index.lazy").then((d) => d.Route))
 
-const RoutineIndexLazyRoute = RoutineIndexLazyImport.update({
-  path: "/Routine/",
-  getParentRoute: () => rootRoute,
-} as any).lazy(() => import("./routes/Routine/index.lazy").then((d) => d.Route))
-
-const ProgramUpperLazyRoute = ProgramUpperLazyImport.update({
-  path: "/Program/upper",
-  getParentRoute: () => rootRoute,
-} as any).lazy(() => import("./routes/Program/upper.lazy").then((d) => d.Route))
-
-const ProgramLowerLazyRoute = ProgramLowerLazyImport.update({
-  path: "/Program/lower",
-  getParentRoute: () => rootRoute,
-} as any).lazy(() => import("./routes/Program/lower.lazy").then((d) => d.Route))
-
-const ProgramCardioLazyRoute = ProgramCardioLazyImport.update({
-  path: "/Program/cardio",
+const NutritionIndexLazyRoute = NutritionIndexLazyImport.update({
+  path: "/Nutrition/",
   getParentRoute: () => rootRoute,
 } as any).lazy(() =>
-  import("./routes/Program/cardio.lazy").then((d) => d.Route),
+  import("./routes/Nutrition/index.lazy").then((d) => d.Route),
 )
+
+const BookIndexLazyRoute = BookIndexLazyImport.update({
+  path: "/Book/",
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import("./routes/Book/index.lazy").then((d) => d.Route))
+
+const BookUpperLazyRoute = BookUpperLazyImport.update({
+  path: "/Book/upper",
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import("./routes/Book/upper.lazy").then((d) => d.Route))
+
+const BookLowerLazyRoute = BookLowerLazyImport.update({
+  path: "/Book/lower",
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import("./routes/Book/lower.lazy").then((d) => d.Route))
+
+const BookCardioLazyRoute = BookCardioLazyImport.update({
+  path: "/Book/cardio",
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import("./routes/Book/cardio.lazy").then((d) => d.Route))
 
 // Populate the FileRoutesByPath interface
 
@@ -51,20 +57,24 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof IndexLazyImport
       parentRoute: typeof rootRoute
     }
-    "/Program/cardio": {
-      preLoaderRoute: typeof ProgramCardioLazyImport
+    "/Book/cardio": {
+      preLoaderRoute: typeof BookCardioLazyImport
       parentRoute: typeof rootRoute
     }
-    "/Program/lower": {
-      preLoaderRoute: typeof ProgramLowerLazyImport
+    "/Book/lower": {
+      preLoaderRoute: typeof BookLowerLazyImport
       parentRoute: typeof rootRoute
     }
-    "/Program/upper": {
-      preLoaderRoute: typeof ProgramUpperLazyImport
+    "/Book/upper": {
+      preLoaderRoute: typeof BookUpperLazyImport
       parentRoute: typeof rootRoute
     }
-    "/Routine/": {
-      preLoaderRoute: typeof RoutineIndexLazyImport
+    "/Book/": {
+      preLoaderRoute: typeof BookIndexLazyImport
+      parentRoute: typeof rootRoute
+    }
+    "/Nutrition/": {
+      preLoaderRoute: typeof NutritionIndexLazyImport
       parentRoute: typeof rootRoute
     }
   }
@@ -74,8 +84,9 @@ declare module "@tanstack/react-router" {
 
 export const routeTree = rootRoute.addChildren([
   IndexLazyRoute,
-  ProgramCardioLazyRoute,
-  ProgramLowerLazyRoute,
-  ProgramUpperLazyRoute,
-  RoutineIndexLazyRoute,
+  BookCardioLazyRoute,
+  BookLowerLazyRoute,
+  BookUpperLazyRoute,
+  BookIndexLazyRoute,
+  NutritionIndexLazyRoute,
 ])

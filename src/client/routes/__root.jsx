@@ -1,19 +1,21 @@
-import { createRootRoute, redirect, Outlet } from '@tanstack/react-router'
-import { TanStackRouterDevtools } from '@tanstack/router-devtools'
-
+import { createRootRoute, redirect, Outlet } from "@tanstack/react-router";
+import { TanStackRouterDevtools } from "@tanstack/router-devtools";
+import BottomNav from "../components/BottomNav";
 
 export const Route = createRootRoute({
-  beforeLoad: async ({context, location}) => {
+  beforeLoad: async ({ context, location }) => {
     if (!context.authStatus && location.pathname.startsWith("/program")) {
       window.location.href = "/login/google/callback";
-      throw redirect({to: "/"});
+      throw redirect({ to: "/" });
     }
   },
   component: () => (
-    <div className="flex flex-col w-full items-center">
-      <div className='max-w-sm w-full'><Outlet /></div>
-      
+    <div className="flex flex-col w-full h-full items-center">
+      <div className="max-w-sm w-full bg-[rgb(17,17,17)] h-full overflow-auto relative">
+        <Outlet />
+        <BottomNav />
+      </div>
       <TanStackRouterDevtools />
     </div>
   ),
-})
+});

@@ -1,15 +1,25 @@
-import { createLazyFileRoute } from "@tanstack/react-router";
+import { Link, createLazyFileRoute } from "@tanstack/react-router";
 import armImg from "../../assets/arm.png";
 import SlotBox from "../../components/SlotBox";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-export const Route = createLazyFileRoute("/Program/upper")({
-  component: Routine,
+export const Route = createLazyFileRoute("/Book/upper")({
+  component: Upper,
 });
 
-function Routine() {
+function Upper() {
   const [slotsAvailable, setSlotsAvailable] = useState(5);
   const [slotsBooked, setSlotsBooked] = useState([]);
+
+  useEffect(() => {
+    async function getSlots() {
+      const slots = await fetch("/api/slots/upper", {
+        method: "GET",
+      });
+      console.log(slots);
+    }
+    getSlots();
+  }, []);
 
   function bookChestPress(confirm, i) {
     if (!confirm) {
@@ -45,8 +55,9 @@ function Routine() {
 
   return (
     <div className="flex flex-col bg-[rgb(17,17,17)]">
-      <div className="flex p-4 gap-10 items-center h-56 bg-white relative">
+      <div className="flex p-4 pb-12 gap-10  h-56 bg-white relative">
         <div className="flex flex-col items-start">
+          <Link to=".." className="text-black flex-1 flex">⇦ Back</Link>
           <p className="text-secondary">Program</p>
           <h1 className="flex-1 text-[36px] text-primary-foreground font-semibold pb-2">
             Upper
@@ -80,16 +91,16 @@ function Routine() {
 
         <div className="flex pt-2 gap-2 justify-between">
           {[...Array(5)].map((_x, i) => (
-            <p className="flex-1 max-w-12 flex flex-col items-center text-sm text-gray-400">{`${i + 5} am`}</p>
+            <p key={i} className="flex-1 max-w-12 flex flex-col items-center text-sm text-gray-400">{`${i + 5} am`}</p>
           ))}
         </div>
 
         <div className="flex flex-col gap-2">
           <p className="text-2xl flex gap-2 justify-between items-center">
             Chest Press
-            <p className="text-sm rounded-full px-2 text-gray-400">
+            <span className="text-sm rounded-full px-2 text-gray-400">
               {slotsAvailable} slots available
-            </p>
+            </span>
           </p>
           <div className="flex gap-2 justify-between">
             {[...Array(5)].map((_x, i) => (
@@ -118,9 +129,9 @@ function Routine() {
         <div className="flex flex-col pt-2 gap-2">
           <p className="text-2xl flex gap-2 justify-between items-center">
             Lat pulldown{" "}
-            <p className="text-sm rounded-full px-2 text-gray-400">
+            <span className="text-sm rounded-full px-2 text-gray-400">
               {slotsAvailable} slots available
-            </p>
+            </span>
           </p>
           <div className="flex gap-2 justify-between">
             {[...Array(5)].map((_x, i) => (
@@ -149,9 +160,9 @@ function Routine() {
         <div className="flex flex-col pt-2 gap-2">
           <p className="text-2xl flex gap-2 justify-between items-center">
             Bench Press
-            <p className="text-sm rounded-full px-2 text-gray-400">
+            <span className="text-sm rounded-full px-2 text-gray-400">
               {slotsAvailable} slots available
-            </p>
+            </span>
           </p>
           <div className="flex gap-2 justify-between">
             {[...Array(5)].map((_x, i) => (
