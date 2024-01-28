@@ -4,7 +4,7 @@ import BottomNav from "../components/BottomNav";
 
 export const Route = createRootRoute({
   beforeLoad: async ({ context, location }) => {
-    if (!context.authStatus && location.pathname.startsWith("/program")) {
+    if (!context.authStatus && location.pathname.startsWith("/book")) {
       window.location.href = "/login/google/callback";
       throw redirect({ to: "/" });
     }

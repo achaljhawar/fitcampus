@@ -9,13 +9,13 @@ export const Route = createLazyFileRoute("/")({
 
 function Index() {
   const { authStatus } = useContext(AuthContext);
-  const [greeting, setGreeting] = useState("");
+  const [greeting, setGreeting] = useState(":)");
   const [gymStatus, setGymStatus] = useState("open");
   useEffect(() => {
     const currentHour = parseFloat(moment(new Date()).format("HH"));
-    if (currentHour >= 12 && currentHour < 18) setGreeting("Good Afternoon.");
-    else if (currentHour >= 18) setGreeting("Good Evening.");
-    else setGreeting("Good Morning.");
+    if (currentHour >= 12 && currentHour < 18) setGreeting("Good Afternoon");
+    else if (currentHour >= 18) setGreeting("Good Evening");
+    else setGreeting("Good Morning");
     setGymStatus(((currentHour >= 5.5 && currentHour < 9) || (currentHour > 16 && currentHour < 21)) ? "open" : "closed");
   }, []);
   return (
