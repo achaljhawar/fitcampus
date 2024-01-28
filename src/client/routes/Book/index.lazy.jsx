@@ -12,7 +12,7 @@ export const Route = createLazyFileRoute("/Book/")({
 });
 
 function Index() {
-  const { authStatus, setAuthStatus } = useContext(AuthContext);
+  const { authStatus, setAuthStatus } = useContext(AuthContext) ? useContext(AuthContext) : {authStatus: null, setAuthStatus: null};
   return (
     <div className="flex p-4 py-6 flex-col gap-6">
       <div className="flex gap-10">
