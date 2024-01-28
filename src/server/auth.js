@@ -6,7 +6,7 @@ dotenv.config();
 passport.use(new GoogleStrategy({
     clientID: "1051323857860-s1v3gnrprh01t8sjo572404dap749sa9.apps.googleusercontent.com",
     clientSecret: "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",
-    callbackURL: "http://localhost:3000/login/google/callback",
+    callbackURL: "https://fitcampus.onrender.com/login/google/callback",
     passReqToCallback: true
   },
   function(request, accessToken, refreshToken, profile, done) {
