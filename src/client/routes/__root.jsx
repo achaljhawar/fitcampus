@@ -1,5 +1,4 @@
 import { createRootRoute, redirect, Outlet } from "@tanstack/react-router";
-import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 import BottomNav from "../components/BottomNav";
 
 export const Route = createRootRoute({
@@ -15,7 +14,6 @@ export const Route = createRootRoute({
         <Outlet />
         <BottomNav />
       </div>
-      <TanStackRouterDevtools />
     </div>
   ),
 });
